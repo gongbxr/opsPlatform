@@ -1,0 +1,51 @@
+__author__ = 'Administrator'
+
+data = '''Assert(Thu Sep 25 17:17:36 2014
+)=> File: jni/drvogles2/MOGLES2Viewport.cpp, Line: 147, function:BeginDrawViewport2
+        Message:
+GLERROR:GL_INVALID_ENUM,jni/drvogles2/MOGLES2Viewport.cpp(147):BeginDrawViewport2
+
+Assert(Thu Sep 25 17:17:35 2014
+)=> File: jni/drvogles2/MOGLES2Shader.cpp, Line: 450, function:SetShaderParameter
+        Message:
+GLERROR:GL_INVALID_ENUM,jni/drvogles2/MOGLES2Shader.cpp(450):SetShaderParameter
+
+Assert(Fri Oct 10 17:18:35 2014
+)=> File: jni/drvogles2/MOGLES2Texture.cpp, Line: 341, function:CreateTexture2D
+Assert(Sat Oct 11 08:39:10 2014
+)=> File: jni/gclient/gamescripthandlers.cpp, Line: 400, function:DumpError
+        Message: type: a runtime error
+msg: [string "utilfuncs.lua"]:1671: bad argument #3 to 'format' (number expected, got no value)
+stack traceback:
+
+
+-------------------------------
+Assert(Wed Oct 15 16:57:24 2014
+)=> File: jni/gclient/gamescripthandlers.cpp, Line: 400, function:DumpError
+        Message: type: a runtime error
+msg: [string "maintmp.lua"]:401:'''
+
+mark = False
+result = []
+keyword = "Sep 25"
+assert_content = ''
+
+for line in data.split("\n"):
+    if line.startswith("Assert"):
+        if line.find(keyword) != -1:
+            mark = True
+
+        else:
+            mark = False
+            result.append(assert_content)
+            assert_content = ''
+
+    if mark:
+        assert_content += (line + "\n")
+         # result.append(line + "\n")
+
+    #print line
+print assert_content
+for value in result:
+    print value
+
